@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎄 Neighborhood Christmas Lights Map
 
-## Getting Started
+An interactive map showing all the Christmas light displays in the neighborhood. Visitors can view all decorated houses and build an optimized driving route from their current location.
 
-First, run the development server:
+## ✨ Features
+
+- **Interactive Google Map**: Beautiful dark-themed map with custom ornament markers
+- **43 Decorated Houses**: All contest entries pinned on the map
+- **One-Click Route Builder**: Builds an optimized driving route from your location
+- **Distance & Duration**: Shows total trip distance and estimated drive time
+- **Mobile Friendly**: Works great on phones for use while driving
+
+## 🚀 Setup
+
+### 1. Get a Google Maps API Key
+
+Go to [Google Cloud Console](https://console.cloud.google.com/) and:
+1. Create a new project
+2. Enable these APIs:
+   - Maps JavaScript API
+   - Geocoding API
+   - Directions API
+3. Create an API key in Credentials
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Geocode the Addresses
+
+Run this once to get the correct coordinates for all houses:
+
+```bash
+node scripts/geocode-addresses.js YOUR_API_KEY
+```
+
+### 4. Add Your API Key
+
+Create `.env.local`:
+
+```env
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
+```
+
+### 5. Run the App
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📍 How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Visitor opens the website
+2. Map shows all 43 decorated houses as markers
+3. Visitor clicks "Build My Driving Route"
+4. App gets their location and calculates an optimized route
+5. Route is displayed on the map with distance/time info
 
-## Learn More
+## 🏠 Updating Houses
 
-To learn more about Next.js, take a look at the following resources:
+To add or remove houses, edit `scripts/geocode-addresses.js` and re-run it:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+node scripts/geocode-addresses.js YOUR_API_KEY
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This regenerates `src/data/houses.ts` with updated coordinates.
 
-## Deploy on Vercel
+## 🛠 Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js 15
+- TypeScript
+- Tailwind CSS
+- Google Maps JavaScript API
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+Made with ❤️ for Christmas light enthusiasts 🎅
