@@ -116,7 +116,7 @@ export default function ChristmasMap({
       if (userLocation) {
         bounds.extend(userLocation);
       }
-      map.fitBounds(bounds, 80);
+      map.fitBounds(bounds, 50);
     }
   }, [map, houses, userLocation]);
 
@@ -131,7 +131,7 @@ export default function ChristmasMap({
     <GoogleMap
       mapContainerStyle={{ width: '100%', height: '100%' }}
       center={center}
-      zoom={12}
+      zoom={14}
       onLoad={onLoad}
       onUnmount={onUnmount}
       options={{

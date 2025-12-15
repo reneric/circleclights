@@ -14,10 +14,30 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "🎄 Christmas Lights Map",
-  description: "Discover and tour the best Christmas light displays in your neighborhood!",
+  metadataBase: new URL("https://circleclights.vercel.app"),
+  title: "🎄 Circle C Ranch Christmas Lights",
+  description: "Discover and tour 43 decorated houses in Circle C Ranch! Build an optimized driving route from your location.",
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>",
+  },
+  openGraph: {
+    title: "🎄 Circle C Ranch Christmas Lights",
+    description: "Discover and tour 43 decorated houses in Circle C Ranch! Build an optimized driving route from your location.",
+    images: [
+      {
+        url: "/thumbnail.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Circle C Ranch Christmas Lights Map",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "🎄 Circle C Ranch Christmas Lights",
+    description: "Discover and tour 43 decorated houses in Circle C Ranch!",
+    images: ["/thumbnail.jpg"],
   },
 };
 

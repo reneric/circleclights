@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { houses } from '@/data/houses';
 import ChristmasMap from '@/components/ChristmasMap';
 import Snowfall from '@/components/Snowfall';
+import InfoModal from '@/components/InfoModal';
 
 const libraries: ("places" | "geometry" | "drawing")[] = ['places'];
 
@@ -159,7 +160,38 @@ export default function Home() {
     setOptimizedOrder([]);
   };
 
+  const handleOpenGoogleMaps = (url: string, partNum: number, totalParts: number) => {
+    const hasSeenModal = localStorage.getItem('hasSeenMapsInfoModal');
+    
+    if (!hasSeenModal && totalParts > 1) {
+      // Show modal first time
+      setPendingMapUrl({ url, partNum });
+      setShowInfoModal(true);
+    } else {
+      // Already seen, just open
+      window.open(url, '_blank');
+      setShowMapsMenu(false);
+    }
+  };
+
+  const handleModalContinue = () => {
+    localStorage.setItem('hasSeenMapsInfoModal', 'true');
+    if (pendingMapUrl) {
+      window.open(pendingMapUrl.url, '_blank');
+      setShowMapsMenu(false);
+    }
+    setShowInfoModal(false);
+    setPendingMapUrl(null);
+  };
+
+  const handleModalClose = () => {
+    setShowInfoModal(false);
+    setPendingMapUrl(null);
+  };
+
   const [showMapsMenu, setShowMapsMenu] = useState(false);
+  const [pendingMapUrl, setPendingMapUrl] = useState<{ url: string; partNum: number } | null>(null);
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   // Generate Google Maps URLs - split into parts since Maps only supports ~10 waypoints
   const mapsUrls = (() => {
@@ -313,10 +345,7 @@ export default function Home() {
                         {mapsUrls.map((item, i) => (
                           <button
                             key={i}
-                            onClick={() => {
-                              window.open(item.url, '_blank');
-                              setShowMapsMenu(false);
-                            }}
+                            onClick={() => handleOpenGoogleMaps(item.url, i + 1, mapsUrls.length)}
                             className="w-full px-4 py-3 text-white hover:bg-gray-700 transition-colors text-left flex items-center gap-2"
                           >
                             <span className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold">
@@ -370,6 +399,20 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Decorative lights at the top */}
+      <div className="fixed top-0 left-0 right-0 h-1 flex z-10 pointer-events-none">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={i}
+            className="flex-1 animate-lights"
+            style={{
+              backgroundColor: ['#ef4444', '#22c55e', '#eab308', '#3b82f6'][i % 4],
+              animationDelay: `${(i % 4) * 0.25}s`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Decorative lights at the bottom */}
       <div className="fixed bottom-0 left-0 right-0 h-1 flex z-10 pointer-events-none">
         {Array.from({ length: 50 }).map((_, i) => (
@@ -383,6 +426,15 @@ export default function Home() {
           />
         ))}
       </div>
+
+      {/* Info modal for first-time Google Maps opens */}
+      <InfoModal
+        isOpen={showInfoModal}
+        onClose={handleModalClose}
+        onContinue={handleModalContinue}
+        partNumber={pendingMapUrl?.partNum || 1}
+        totalParts={mapsUrls.length}
+      />
     </main>
   );
 }
